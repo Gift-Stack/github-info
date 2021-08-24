@@ -38,24 +38,23 @@ const Home = () => {
           className="form-group has-search"
           style={{ borderRadius: 100, width: '40%', position: 'relative' }}
         >
-          {user.length === 0 && (
-            <span
-              className="fa fa-search form-control-feedback"
-              style={{
-                position: 'absolute',
-                zIndex: 2,
-                display: 'block',
-                width: '5rem',
-                height: '5rem',
-                lineHeight: '2.375rem',
-                textAlign: 'center',
-                pointerEvents: 'none',
-                color: '#aaa',
-                top: 10,
-                fontSize: 20
-              }}
-            ></span>
-          )}
+          <span
+            className="fa fa-search form-control-feedback"
+            style={{
+              position: 'absolute',
+              zIndex: 2,
+              display: 'block',
+              width: '5rem',
+              height: '5rem',
+              lineHeight: '2.375rem',
+              textAlign: 'center',
+              pointerEvents: 'none',
+              color: '#aaa',
+              top: 10,
+              right: 0,
+              fontSize: 20
+            }}
+          ></span>
           <input
             type="text"
             value={user}
@@ -65,14 +64,12 @@ const Home = () => {
           />
         </div>
 
-        <Link to="/">
-          <button
-            className="btn btn-lg btn-secondary py-3 mt-5"
-            style={{ width: 250 }}
-          >
-            Search Github
-          </button>
-        </Link>
+        <button
+          className="btn btn-lg btn-secondary py-2 mt-5"
+          style={{ width: 250 }}
+        >
+          Search Github
+        </button>
       </div>
     </div>
   )
