@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import GitHub from '../../../assets/GitHub-Emblem.png'
+import SearchContext from '../../../context/search/searchContext'
+
+import Avatar from '../../../assets/avatar.svg'
 
 const Navbar = () => {
   const [user, setUser] = useState('')
+  const { avatar } = useContext(SearchContext)
 
   const handleChangeUser = (e: React.FormEvent<HTMLInputElement>) =>
     setUser(e.currentTarget.value)
@@ -45,14 +50,25 @@ const Navbar = () => {
           />
         </div>
       </form>
-      <ul className="navbar-nav">
+      <ul className="d-flex align-items-center">
+        <div
+          className="rounded-circle"
+          style={{ width: 70, height: 70, borderRadius: 50 }}
+        >
+          <img
+            src={avatar || Avatar}
+            alt="User Avatar"
+            className="img-fluid"
+            style={{ borderRadius: '50%' }}
+          />
+        </div>
         <li className="nav-item dropdown">
           <a
             className="nav-link dropdown-toggle"
             href="#!"
             id="navbarDropdownMenuLink"
             data-toggle="dropdown"
-            aria-haspopup="true"
+            // aria-haspopup="true"
             aria-expanded="false"
           >
             Dropdown link

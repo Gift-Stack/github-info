@@ -21,7 +21,6 @@ const AuthState = (props) => {
         code
       )
       const data = await res.data
-      console.log(data.data?.access_token)
       dispatch({ type: LOGIN, payload: data.data?.access_token })
     } catch (error) {
       console.error(error)

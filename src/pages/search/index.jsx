@@ -1,9 +1,12 @@
+import { useContext } from 'react'
+import SearchContext from '../../context/search/searchContext'
 import Body from './components/Body'
 import Navbar from './components/Navbar'
 
 const SearchResults = () => {
+  const { users, repos } = useContext(SearchContext)
   return (
-    <div style={{ background: '#f9f9f9', minHeight: '100vh' }}>
+    <div style={{ background: '#f9f9f9', minHeight: '260vh' }}>
       <div
         className="position-fixed top-0"
         style={{
@@ -17,7 +20,7 @@ const SearchResults = () => {
         <Navbar />
       </div>
       <div className="d-flex justify-content-center" style={{ marginTop: 100 }}>
-        <Body />
+        <Body results={users} reposResult={repos} />
       </div>
     </div>
   )

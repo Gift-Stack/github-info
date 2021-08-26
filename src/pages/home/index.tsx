@@ -1,32 +1,76 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-
-import Image from '../../assets/i.jpg'
+import React, { useState, useEffect, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
+import Avatar from '../../assets/avatar.svg'
 import GitHub from '../../assets/GitHub-Emblem.png'
+import axios from 'axios'
+import SearchContext from '../../context/search/searchContext'
 
+const GITHUB_REPO_QUERY_STRING = `
+{
+  viewer {
+    name
+    avatarUrl
+    __typename
+  }
+}
+`
 const Home = () => {
+  const history = useHistory()
+
+  const { getUsers, getRepos, avatar, setAvatar } = useContext(SearchContext)
   const [user, setUser] = useState('')
+  const [authUser, setAuthUser] = useState('')
+
+  useEffect(() => {
+    const body = JSON.stringify({
+      query: GITHUB_REPO_QUERY_STRING
+    })
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `token ${localStorage.token} `
+      }
+    }
+    axios.post('https://api.github.com/graphql', body, config).then((res) => {
+      setAuthUser(res.data.data.viewer.name)
+      setAvatar(res.data.data.viewer.avatarUrl)
+    })
+    // eslint-disable-next-line
+  }, [])
 
   const handleChangeUser = (e: React.FormEvent<HTMLInputElement>) => {
     setUser(e.currentTarget.value)
   }
 
+  const handleSearch = () => {
+    if (user.length > 0) {
+      getUsers(user)
+        .then(() => history.push('/users'))
+        .catch((err: any) => alert(err))
+      getRepos(user).catch((err: any) => console.trace(err))
+    } else {
+      alert('Please add a value')
+    }
+  }
+
   return (
     <div>
-      <div className="position-absolute d-flex justify-content-end bg-transparent py-4">
+      <div className="position-absolute d-flex justify-content-end w-100 bg-transparent py-4">
         <div className="mx-5 d-flex align-items-center">
           <div
             className="rounded-circle"
-            style={{ width: 100, height: 100, borderRadius: 50 }}
+            style={{ width: 70, height: 70, borderRadius: 50 }}
           >
             <img
-              src={Image}
+              src={avatar || Avatar}
               alt="Pic"
               className="img-fluid"
               style={{ borderRadius: '50%' }}
             />
           </div>
-          <p>John Doe</p>
+          <p className="mx-3 my-auto" style={{ fontWeight: 'bolder' }}>
+            {authUser}
+          </p>
         </div>
       </div>
       <div
@@ -67,6 +111,7 @@ const Home = () => {
         <button
           className="btn btn-lg btn-secondary py-2 mt-5"
           style={{ width: 250 }}
+          onClick={handleSearch}
         >
           Search Github
         </button>
